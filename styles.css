@@ -1,0 +1,172 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 30px;
+  color: #368059;
+  font-size: 2.5em;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 2px solid #ccc;
+}
+
+.tab {
+  padding: 15px 25px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.tab:not(.active):hover {
+  background-color: #e8e8e8;
+}
+
+.tab.active {
+  background-color: #fff;
+  color: #368059;
+  border-top: 2px solid #368059;
+  border-right: 2px solid #ccc;
+  border-left: 2px solid #ccc;
+  border-bottom: none;
+}
+
+.tab-content {
+  display: none;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  border: 1px solid #368059;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #368059;
+}
+
+.card p {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.card a {
+  color: #368059;
+  text-decoration: none;
+}
+
+.card a:hover {
+  text-decoration: underline;
+}
+
+.button {
+  background-color: black;
+  cursor: pointer;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin: 5px 0 0 5px;
+  transition: background-color 0.3s;
+}
+
+.button.check {
+  background-color: #4caf50;
+}
+
+.button.check:hover {
+  background-color: #45a049;
+}
+
+.button.x {
+  background-color: #f44336;
+}
+
+.button.x:hover {
+  background-color: #e53935;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+}
+
+.login-box {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
+  color: #368059;
+}
+
+.login-box input {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 10px auto;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.login-box button {
+  background-color: #368059;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-box button:hover {
+  background-color: #2e6e4e;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
