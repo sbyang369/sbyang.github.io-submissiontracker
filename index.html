@@ -16,6 +16,11 @@
             <p id="error-message" class="error-message"></p>
         </div>
     </div>
+    <div id="loading-container" class="loading-container" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
 
     <div id="main-content" style="display: none;">
         <h1><u>Submission Database</u></h1>
@@ -57,19 +62,28 @@
         const allowedUsers = ['sophia', 'isabel'];
         const allowedPassword = 'randomwarriors';
 
-        function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('error-message');
+function login() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const errorMessage = document.getElementById('error-message');
+    const loginContainer = document.getElementById('login-container');
+    const loadingContainer = document.getElementById('loading-container');
+    const mainContent = document.getElementById('main-content');
 
-            if (allowedUsers.includes(username) && password === allowedPassword) {
-                document.getElementById('login-container').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                errorMessage.textContent = '';
-            } else {
-                errorMessage.textContent = 'Error: Invalid Password';
-            }
-        }
+    if (allowedUsers.includes(username) && password === allowedPassword) {
+        loginContainer.style.display = 'none';
+        loadingContainer.style.display = 'flex'; // Show loading animation
+
+        setTimeout(() => {
+            loadingContainer.style.display = 'none';
+            mainContent.style.display = 'block'; // Show main content after loading
+        }, 2000); // Simulated delay (2 seconds)
+        
+        errorMessage.textContent = '';
+    } else {
+        errorMessage.textContent = 'Error: Invalid Password';
+    }
+}
 
         $(document).ready(function() {
             const sheetId = "1jCNN4ryXx2tN8Tha5zqtenuZbsbiRTFTaYBLRxV1xrk";
