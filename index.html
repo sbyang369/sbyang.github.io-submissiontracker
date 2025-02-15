@@ -3,202 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submission Tracker</title>
+    <title>Login Page</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+    <!-- Login Container -->
     <div id="login-container" class="login-container">
-        <div class="login-box">
-            <h2>Welcome Back</h2>
-            <input type="text" id="username" placeholder="Enter your name" required>
-            <input type="password" id="password" placeholder="Enter your password" required>
-            <button class="login-button" onclick="login()">Login</button>
-            <p id="error-message" class="error-message"></p>
-        </div>
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="error-message" class="error-message"></p>
     </div>
 
-    <div id="main-content" style="display: none;">
-        <h1><u>Submission Database</u></h1>
-        <div class="tabs">
-            <div class="tab active" data-tab="review">REVIEW</div>
-            <div class="tab" data-tab="accepted">ACCEPTED</div>
-            <div class="tab" data-tab="final">FINAL</div>
-            <div class="tab" data-tab="trash">TRASH</div>
-        </div>
-
-        <div id="review" class="tab-content active">
-            <div class="card-container" id="review-container">
-                <!-- Cards for review will be dynamically generated here -->
-            </div>
-        </div>
-        <div id="accepted" class="tab-content">
-            <div class="card-container" id="accepted-container">
-                <!-- Accepted cards will be moved here -->
-            </div>
-        </div>
-        <div id="final" class="tab-content">
-            <div class="card-container" id="final-container">
-                <!-- Final cards will be moved here -->
-            </div>
-        </div>
-        <div id="trash" class="tab-content">
-            <div class="card-container" id="trash-container">
-                <!-- Rejected cards will be moved here -->
-            </div>
-        </div>
+    <!-- Loading Animation -->
+    <div id="loading-container" class="loading-container" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading...</p>
     </div>
 
-    <!-- Include jQuery library -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Include jQuery CSV plugin -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.11/jquery.csv.min.js"></script>
+    <!-- Main Content (Hidden Initially) -->
+    <div id="main-content" class="main-content" style="display: none;">
+        <h1>Welcome to the Submission Database</h1>
+        <p>Your content goes here...</p>
+    </div>
 
     <script>
-        const allowedUsers = ['sophia', 'isabel'];
-        const allowedPassword = 'randomwarriors';
+        const allowedUsers = ["Sophia", "Isabel"];
+        const allowedPassword = "randomwarriors";
 
         function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('error-message');
+            const loginContainer = document.getElementById('login-container');
+            const loadingContainer = document.getElementById('loading-container');
+            const mainContent = document.getElementById('main-content');
 
             if (allowedUsers.includes(username) && password === allowedPassword) {
-                document.getElementById('login-container').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
+                loginContainer.style.display = 'none';
+                loadingContainer.style.display = 'flex'; // Show loading animation
+
+                setTimeout(() => {
+                    loadingContainer.style.display = 'none';
+                    mainContent.style.display = 'block'; // Show main content after loading
+                }, 2000); // Simulated delay (2 seconds)
+
                 errorMessage.textContent = '';
             } else {
                 errorMessage.textContent = 'Error: Invalid Password';
             }
         }
-
-        $(document).ready(function() {
-            const sheetId = "1jCNN4ryXx2tN8Tha5zqtenuZbsbiRTFTaYBLRxV1xrk";
-            const sheetName = encodeURIComponent("WinterSubmissions2023");
-            const sheetURL = https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${sheetName};
-
-
-            let movedCards = [];
-
-            // Fetch data from sheet
-            $.ajax({
-                type: "GET",
-                url: sheetURL,
-                dataType: "text",
-                success: function(response) {
-                    var data = $.csv.toArrays(response);
-                    createCards(data); 
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error fetching Google Sheets data:", error);
-                }
-            });
-
-            // Create cards based on spreadsheet 
-            function createCards(cardsData) {
-                const reviewContainer = document.querySelector("#review-container");
-
-                // Clear previous cards
-                reviewContainer.innerHTML = "";
-
-                // Skip the first row (header row)
-                for (let i = 1; i < cardsData.length; i++) {
-                    const card = cardsData[i];
-                    const title = card[4]; 
-                    const link = card[2];
-                    const wordCount = card[3]; 
-
-                    const cardElement = document.createElement("div");
-                    cardElement.classList.add("card");
-
-                    cardElement.innerHTML = 
-                        <h3>${title}</h3>
-                        <p><a href="${link}" target="_blank">Word Count: ${wordCount}</a></p>
-                        <button class="button check">✅</button>
-                        <button class="button x">❌</button>
-                    ;
-                    reviewContainer.appendChild(cardElement);
-                }
-
-                // Event listeners
-                const checkButtons = document.querySelectorAll(".button.check");
-                const xButtons = document.querySelectorAll(".button.x");
-
-                // Check button
-                checkButtons.forEach(button => {
-                    button.addEventListener("click", function() {
-                        const cardElement = this.parentElement;
-                        const currentTab = getCurrentTab();
-
-                        if (currentTab === "review") {
-                            moveToAccepted(cardElement);
-                        } else if (currentTab === "accepted") {
-                            moveToFinal(cardElement);
-                        }
-
-                        movedCards.push({card: cardElement, container: document.getElementById(${currentTab}-container)});
-                    });
-                });
-
-                // X Button 
-                xButtons.forEach(button => {
-                    button.addEventListener("click", function() {
-                        const cardElement = this.parentElement;
-                        moveToTrash(cardElement);
-
-                        const currentTab = getCurrentTab();
-                        movedCards.push({card: cardElement, container: document.getElementById(${currentTab}-container)});
-                    });
-                });
-            }
-
-            function moveToAccepted(cardElement) {
-                const acceptedContainer = document.querySelector("#accepted-container");
-                acceptedContainer.appendChild(cardElement);
-            }
-
-            function moveToFinal(cardElement) {
-                const finalContainer = document.querySelector("#final-container");
-                finalContainer.appendChild(cardElement);
-            }
-
-            function moveToTrash(cardElement) {
-                const trashContainer = document.querySelector("#trash-container");
-                trashContainer.appendChild(cardElement);
-            }
-
-            // Undo functionality
-            document.addEventListener("keydown", function(event) {
-                if (event.ctrlKey && event.key === "z") {
-                    undoMove();
-                }
-            });
-
-            function undoMove() {
-                if (movedCards.length > 0) {
-                    const lastMove = movedCards.pop();
-                    lastMove.container.appendChild(lastMove.card);
-                }
-            }
-
-            // Tab functionality
-            const tabs = document.querySelectorAll(".tab");
-            tabs.forEach(tab => {
-                tab.addEventListener("click", function() {
-                    // Remove active class from all tabs and content
-                    tabs.forEach(t => t.classList.remove("active"));
-                    document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-                    
-                    // Add active class to the clicked tab and its content
-                    tab.classList.add("active");
-                    document.getElementById(tab.dataset.tab).classList.add("active");
-                });
-            });
-
-            function getCurrentTab() {
-                const activeTab = document.querySelector(".tab.active");
-                return activeTab ? activeTab.dataset.tab : "review";
-            }
-        });
     </script>
+
 </body>
 </html>
